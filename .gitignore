@@ -1,0 +1,36 @@
+# Node.js
+node_modules/
+Client/node_modules/
+Server/node_modules/
+.env
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vite
+Client/dist/
+Client/.vite/
+
+# Logs
+logs/
+*.log
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Build output
+Server/build/
+
+# Misc
+*.local
+.env.*.local
