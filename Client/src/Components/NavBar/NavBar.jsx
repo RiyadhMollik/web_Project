@@ -39,7 +39,7 @@ const Navbar = () => {
           <Link to="/about" className="hover:text-blue-600">About</Link>
         </li>
         <li>
-          <Link to="/appoinment" className="hover:text-blue-600">Appoinment</Link>
+          <Link to="/doctor-appointment" className="hover:text-blue-600">Appoinment</Link>
         </li>
         <li>
           {isLoggedIn ? (
@@ -73,7 +73,7 @@ const Navbar = () => {
           <Link to="/about" className="block">About</Link>
         </li>
         <li>
-          <Link to="/appoinment" className="block">Appoinment</Link>
+          <Link to="/doctor-appointment" className="block">Appoinment</Link>
         </li>
         <li>
           <div className="mt-2">
