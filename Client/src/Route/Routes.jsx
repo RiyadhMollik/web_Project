@@ -11,6 +11,7 @@ import NavBar from '../Components/NavBar/NavBar';
 import Login from '../Components/Login/Login';
 import Signup from '../Components/Login/SignUp';
 import PatientProfile from '../Components/Profile/PatientProfile';
+import DoctorAppSystem from '../Components/Appointment/DoctorAppSystem';
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +41,9 @@ export const router = createBrowserRouter([
       {
         path: '/patient-profile',
         element: <PatientProfile />,
+      },{
+        path: '/doctor-appointment',
+        element: <DoctorAppSystem/>,
       }
       
     ],
