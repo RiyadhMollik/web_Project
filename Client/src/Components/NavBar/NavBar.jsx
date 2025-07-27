@@ -3,12 +3,35 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaMoon, FaSun, FaUserCircle } from "react-icons/fa";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 
+// Static doctor data for search suggestions
+const doctorSuggestions = [
+  { id: 1, doctorName: "Dr. Smith", specialty: "Cardiologist" },
+  { id: 2, doctorName: "Dr. Patel", specialty: "Neurologist" },
+];
+
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Simulated login state
   const [search, setSearch] = useState("");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [searchFocused, setSearchFocused] = useState(false);
   const navigate = useNavigate();
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (search.trim()) {
+      navigate("/doctor-appointment", { state: { search } });
+      setOpen(false); // close mobile menu if open
+      setSearchFocused(false);
+    }
+  };
+
+  const handleSuggestionClick = (doctor) => {
+    navigate("/doctor-appointment", { state: { search: doctor.doctorName } });
+    setSearch(doctor.doctorName);
+    setSearchFocused(false);
+    setOpen(false);
+  };
 
   const handleUserIconClick = () => {
     setUserMenuOpen((prev) => !prev);
@@ -24,6 +47,14 @@ const Navbar = () => {
     setUserMenuOpen(false);
   };
 
+  const filteredSuggestions = search.trim()
+    ? doctorSuggestions.filter(
+        (doc) =>
+          doc.doctorName.toLowerCase().includes(search.toLowerCase()) ||
+          doc.specialty.toLowerCase().includes(search.toLowerCase())
+      )
+    : [];
+
   return (
     <header className="shadow-md bg-white text-gray-800 z-50 flex justify-between items-center h-16 relative">
       {/* Logo */}
@@ -36,14 +67,35 @@ const Navbar = () => {
       </Link>
 
       {/* Search bar (centered on desktop) */}
-      <div className="hidden md:block w-1/3 mx-4">
-        <input
-          type="text"
-          placeholder="Search..."
-          className="w-full px-3 py-1.5 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+      <div className="hidden md:block w-1/3 mx-4 relative">
+        <form onSubmit={handleSearchSubmit}>
+          <input
+            type="text"
+            placeholder="Search doctor by name or specialty..."
+            className="w-full px-3 py-1.5 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onFocus={() => setSearchFocused(true)}
+            onBlur={() => setTimeout(() => setSearchFocused(false), 150)}
+            autoComplete="off"
+          />
+        </form>
+        {searchFocused && filteredSuggestions.length > 0 && (
+          <ul className="absolute left-0 right-0 bg-white border rounded shadow z-50 mt-1 max-h-56 overflow-y-auto">
+            {filteredSuggestions.map((doc) => (
+              <li
+                key={doc.id}
+                className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                onMouseDown={() => handleSuggestionClick(doc)}
+              >
+                <span className="font-medium">{doc.doctorName}</span>
+                <span className="text-gray-500 ml-2 text-sm">
+                  ({doc.specialty})
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* Desktop menu */}
@@ -115,6 +167,36 @@ const Navbar = () => {
       </div>
 
       {/* Mobile menu */}
+      <div className="md:hidden px-6 py-2 relative">
+        <form onSubmit={handleSearchSubmit}>
+          <input
+            type="text"
+            placeholder="Search doctor by name or specialty..."
+            className="w-full px-3 py-1.5 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onFocus={() => setSearchFocused(true)}
+            onBlur={() => setTimeout(() => setSearchFocused(false), 150)}
+            autoComplete="off"
+          />
+        </form>
+        {searchFocused && filteredSuggestions.length > 0 && (
+          <ul className="absolute left-0 right-0 bg-white border rounded shadow z-50 mt-1 max-h-56 overflow-y-auto">
+            {filteredSuggestions.map((doc) => (
+              <li
+                key={doc.id}
+                className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                onMouseDown={() => handleSuggestionClick(doc)}
+              >
+                <span className="font-medium">{doc.doctorName}</span>
+                <span className="text-gray-500 ml-2 text-sm">
+                  ({doc.specialty})
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
       <ul
         className={`md:hidden absolute top-full left-0 w-full bg-slate-100 px-6 py-4 flex flex-col space-y-4 font-semibold transition-all duration-300 ${
           open ? "opacity-100 visible" : "opacity-0 invisible"

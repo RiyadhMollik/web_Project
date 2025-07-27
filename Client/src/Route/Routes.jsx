@@ -11,6 +11,7 @@ import Login from "../Components/Login/Login";
 import Signup from "../Components/Login/SignUp";
 import PatientProfile from "../Components/Profile/PatientProfile";
 import DoctorAppSystem from "../Components/Appointment/DoctorAppSystem";
+import DoctorDetails from "../Components/Appointment/DoctorDetails";
 import About from "../Home/About";
 
 export const router = createBrowserRouter([
@@ -49,6 +50,10 @@ export const router = createBrowserRouter([
       {
         path: "/doctor-appointment",
         element: <DoctorAppSystem />,
+      },
+      {
+        path: "/doctor/:id",
+        element: <DoctorDetails />,
       },
     ],
   },
