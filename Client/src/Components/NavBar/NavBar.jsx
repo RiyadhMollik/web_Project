@@ -9,7 +9,7 @@ const Navbar = () => {
   const [search, setSearch] = useState("");
 
   return (
-    <header className="container mx-auto px-4 py-2 shadow-md bg-slate-100 text-gray-800 z-50 flex justify-between items-center h-16 relative">
+    <header className="shadow-md bg-white text-gray-800 z-50 flex justify-between items-center h-16 relative">
       {/* Logo */}
       <Link
         to="/"

@@ -8,6 +8,8 @@ import Main from '../layout/main';
 import Home from '../Home/home';
 import Footer from '../Components/Footer/Footer';
 import NavBar from '../Components/NavBar/NavBar';
+import Login from '../Components/Login/Login';
+import Signup from '../Components/Login/SignUp';
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +27,14 @@ export const router = createBrowserRouter([
       {
         path: '/navbar',
         element: <NavBar />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
+      },
+      {
+        path: '/signup',
+        element: <Signup />,
       }
       
     ],
