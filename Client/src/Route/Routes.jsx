@@ -11,6 +11,7 @@ import Signup from "../Components/Login/SignUp";
 import PatientProfile from "../Components/Profile/PatientProfile";
 import DoctorAppSystem from "../Components/Appointment/DoctorAppSystem";
 import DoctorDetails from "../Components/Appointment/DoctorDetails";
+import AppointmentList from "../Components/Appointment/AppointmentList";
 import About from "../Home/About";
 
 // Dashboard Components
@@ -62,11 +63,19 @@ export const router = createBrowserRouter([
         path: "/doctor/:id",
         element: <DoctorDetails />,
       },
+      {
+        path: "/appointments",
+        element: (
+          <ProtectedRoute requiredRoles={["patient", "doctor"]}>
+            <AppointmentList />
+          </ProtectedRoute>
+        ),
+      },
       // Dashboard Routes
       {
         path: "/patient/dashboard",
         element: (
-          <ProtectedRoute requiredRoles={['patient']}>
+          <ProtectedRoute requiredRoles={["patient"]}>
             <PatientDashboard />
           </ProtectedRoute>
         ),
@@ -74,7 +83,7 @@ export const router = createBrowserRouter([
       {
         path: "/doctor/dashboard",
         element: (
-          <ProtectedRoute requiredRoles={['doctor']}>
+          <ProtectedRoute requiredRoles={["doctor"]}>
             <DoctorDashboard />
           </ProtectedRoute>
         ),
@@ -82,7 +91,7 @@ export const router = createBrowserRouter([
       {
         path: "/admin/dashboard",
         element: (
-          <ProtectedRoute requiredRoles={['admin']}>
+          <ProtectedRoute requiredRoles={["admin"]}>
             <AdminDashboard />
           </ProtectedRoute>
         ),

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { authService } from "../../services/authService";
+import { appointmentService } from "../../services/appointmentService";
 
 const PatientDashboard = () => {
   const { user, updateProfile, logout } = useAuth();
@@ -16,6 +17,24 @@ const PatientDashboard = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [appointments, setAppointments] = useState([]);
+  const [loadingAppointments, setLoadingAppointments] = useState(false);
+
+  useEffect(() => {
+    fetchAppointments();
+  }, []);
+
+  const fetchAppointments = async () => {
+    try {
+      setLoadingAppointments(true);
+      const response = await appointmentService.getMyAppointments();
+      setAppointments(response.appointments || []);
+    } catch (error) {
+      console.error("Error fetching appointments:", error);
+    } finally {
+      setLoadingAppointments(false);
+    }
+  };
 
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
@@ -328,9 +347,9 @@ const PatientDashboard = () => {
                 </h2>
               </div>
               <div className="p-6 space-y-4">
-                <button 
+                <button
                   className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition"
-                  onClick={() => navigate('/doctor-appointment')}
+                  onClick={() => navigate("/doctor-appointment")}
                 >
                   Book Appointment
                 </button>
@@ -343,6 +362,95 @@ const PatientDashboard = () => {
                 <button className="w-full bg-orange-600 text-white py-3 px-4 rounded-md hover:bg-orange-700 transition">
                   Emergency Services
                 </button>
+              </div>
+            </div>
+
+            {/* My Appointments */}
+            <div className="bg-white shadow rounded-lg mt-6">
+              <div className="px-6 py-4 border-b border-gray-200">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-semibold text-primary">
+                    My Appointments
+                  </h2>
+                  <button
+                    onClick={fetchAppointments}
+                    className="text-blue-600 hover:text-blue-800 text-sm"
+                  >
+                    Refresh
+                  </button>
+                </div>
+              </div>
+              <div className="p-6">
+                {loadingAppointments ? (
+                  <div className="text-center py-4">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
+                    <p className="text-sm text-gray-500 mt-2">
+                      Loading appointments...
+                    </p>
+                  </div>
+                ) : appointments.length === 0 ? (
+                  <div className="text-center py-4">
+                    <p className="text-gray-500">No appointments found</p>
+                    <button
+                      onClick={() => navigate("/doctor-appointment")}
+                      className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                    >
+                      Book your first appointment
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {appointments.slice(0, 3).map((appointment) => (
+                      <div
+                        key={appointment.id}
+                        className="border border-gray-200 rounded-lg p-3"
+                      >
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <p className="font-medium text-primary">
+                              Dr. {appointment.doctor?.name || "Unknown Doctor"}
+                            </p>
+                            <p className="text-sm text-secondary">
+                              {appointment.doctor?.specialization ||
+                                "Specialization not specified"}
+                            </p>
+                            <p className="text-sm text-secondary">
+                              {new Date(
+                                appointment.appointmentDate
+                              ).toLocaleDateString()}{" "}
+                              at {appointment.appointmentTime}
+                            </p>
+                          </div>
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              appointment.status === "scheduled"
+                                ? "bg-blue-100 text-blue-800"
+                                : appointment.status === "confirmed"
+                                ? "bg-green-100 text-green-800"
+                                : appointment.status === "completed"
+                                ? "bg-gray-100 text-gray-800"
+                                : appointment.status === "cancelled"
+                                ? "bg-red-100 text-red-800"
+                                : "bg-yellow-100 text-yellow-800"
+                            }`}
+                          >
+                            {appointment.status.toUpperCase()}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                    {appointments.length > 3 && (
+                      <div className="text-center pt-2">
+                        <button
+                          onClick={() => navigate("/appointments")}
+                          className="text-blue-600 hover:text-blue-800 text-sm"
+                        >
+                          View all {appointments.length} appointments
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 

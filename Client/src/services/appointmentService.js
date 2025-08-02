@@ -96,7 +96,7 @@ class AppointmentService {
 
     // Get doctor details
     async getDoctorDetails(doctorId) {
-        return this.makeRequest(`/users/${doctorId}`);
+        return this.makeRequest(`/appointments/doctor/${doctorId}/details`);
     }
 }
 
