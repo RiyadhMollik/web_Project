@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaMoon, FaSun, FaUserCircle } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
+import { useAuth } from "../../context/AuthContext";
 
 // Static doctor data for search suggestions
 const doctorSuggestions = [
@@ -11,17 +12,17 @@ const doctorSuggestions = [
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Simulated login state
   const [search, setSearch] = useState("");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
   const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useAuth();
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (search.trim()) {
       navigate("/doctor-appointment", { state: { search } });
-      setOpen(false); // close mobile menu if open
+      setOpen(false);
       setSearchFocused(false);
     }
   };
@@ -39,12 +40,19 @@ const Navbar = () => {
 
   const handleDashboard = () => {
     setUserMenuOpen(false);
-    navigate("/patient-profile");
+    if (user?.role === 'admin') {
+      navigate("/admin/dashboard");
+    } else if (user?.role === 'doctor') {
+      navigate("/doctor/dashboard");
+    } else {
+      navigate("/patient/dashboard");
+    }
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
+  const handleLogout = async () => {
+    await logout();
     setUserMenuOpen(false);
+    navigate("/");
   };
 
   const filteredSuggestions = search.trim()
@@ -56,23 +64,23 @@ const Navbar = () => {
     : [];
 
   return (
-    <header className="shadow-md bg-white text-gray-800 z-50 flex justify-between items-center h-16 relative">
+    <header className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg z-50 flex justify-between items-center h-16 px-4 md:px-8 relative">
       {/* Logo */}
       <Link
         to="/"
-        className="text-xl font-bold whitespace-nowrap"
+        className="text-2xl font-extrabold tracking-tight transition-colors duration-200 hover:text-blue-200"
         aria-label="Back to homepage"
       >
         CureSync
       </Link>
 
       {/* Search bar (centered on desktop) */}
-      <div className="hidden md:block w-1/3 mx-4 relative">
+      <div className="hidden md:flex w-full max-w-md mx-4 relative">
         <form onSubmit={handleSearchSubmit}>
           <input
             type="text"
             placeholder="Search doctor by name or specialty..."
-            className="w-full px-3 py-1.5 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onFocus={() => setSearchFocused(true)}
@@ -81,14 +89,14 @@ const Navbar = () => {
           />
         </form>
         {searchFocused && filteredSuggestions.length > 0 && (
-          <ul className="absolute left-0 right-0 bg-white border rounded shadow z-50 mt-1 max-h-56 overflow-y-auto">
+          <ul className="absolute left-0 right-0 mt-2 bg-white/95 backdrop-blur-md border border-gray-200 rounded-lg shadow-xl z-50 max-h-56 overflow-y-auto">
             {filteredSuggestions.map((doc) => (
               <li
                 key={doc.id}
-                className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                className="px-4 py-2 hover:bg-blue-50 cursor-pointer transition-colors duration-150"
                 onMouseDown={() => handleSuggestionClick(doc)}
               >
-                <span className="font-medium">{doc.doctorName}</span>
+                <span className="font-medium text-gray-800">{doc.doctorName}</span>
                 <span className="text-gray-500 ml-2 text-sm">
                   ({doc.specialty})
                 </span>
@@ -101,52 +109,55 @@ const Navbar = () => {
       {/* Desktop menu */}
       <ul className="hidden md:flex items-center space-x-6 font-medium">
         <li>
-          <Link to="/" className="hover:text-blue-600">
+          <Link to="/" className="hover:text-blue-200 transition-colors duration-200">
             Home
           </Link>
         </li>
         <li>
-          <Link to="/about" className="hover:text-blue-600">
+          <Link to="/about" className="hover:text-blue-200 transition-colors duration-200">
             About
           </Link>
         </li>
         <li>
-          <Link to="/doctor-appointment" className="hover:text-blue-600">
-            Appoinment
+          <Link to="/doctor-appointment" className="hover:text-blue-200 transition-colors duration-200">
+            Appointment
           </Link>
         </li>
-        {!isLoggedIn && (
+        {!isAuthenticated && (
           <>
             <li>
-              <Link to="/login" className="hover:text-blue-600">
+              <Link to="/login" className="hover:text-blue-200 transition-colors duration-200">
                 Login
               </Link>
             </li>
             <li>
-              <Link to="/signup" className="hover:text-blue-600">
+              <Link
+                to="/signup"
+                className="bg-white text-blue-600 px-4 py-1.5 rounded-full hover:bg-blue-100 transition-colors duration-200"
+              >
                 Sign Up
               </Link>
             </li>
           </>
         )}
-        {isLoggedIn && (
+        {isAuthenticated && (
           <li className="relative">
             <FaUserCircle
               size={28}
               title="User"
-              className="cursor-pointer"
+              className="cursor-pointer hover:text-blue-200 transition-colors duration-200"
               onClick={handleUserIconClick}
             />
             {userMenuOpen && (
-              <div className="absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
+              <div className="absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-md border border-gray-200 rounded-lg shadow-xl z-50">
                 <button
-                  className="block w-full text-left px-4 py-2 hover:bg-blue-100"
+                  className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-blue-50 transition-colors duration-150"
                   onClick={handleDashboard}
                 >
                   Dashboard
                 </button>
                 <button
-                  className="block w-full text-left px-4 py-2 hover:bg-blue-100"
+                  className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-blue-50 transition-colors duration-150"
                   onClick={handleLogout}
                 >
                   Logout
@@ -160,19 +171,19 @@ const Navbar = () => {
       {/* Mobile Menu Toggle Button */}
       <div className="md:hidden" onClick={() => setOpen(!open)}>
         {open ? (
-          <XMarkIcon className="w-6 h-6" />
+          <XMarkIcon className="w-6 h-6 text-white" />
         ) : (
-          <Bars3Icon className="w-6 h-6" />
+          <Bars3Icon className="w-6 h-6 text-white" />
         )}
       </div>
 
-      {/* Mobile menu */}
-      <div className="md:hidden px-6 py-2 relative">
+      {/* Mobile Search Bar */}
+      <div className={`md:hidden px-4 py-2 relative ${open ? 'block' : 'hidden'}`}>
         <form onSubmit={handleSearchSubmit}>
           <input
             type="text"
             placeholder="Search doctor by name or specialty..."
-            className="w-full px-3 py-1.5 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onFocus={() => setSearchFocused(true)}
@@ -181,14 +192,14 @@ const Navbar = () => {
           />
         </form>
         {searchFocused && filteredSuggestions.length > 0 && (
-          <ul className="absolute left-0 right-0 bg-white border rounded shadow z-50 mt-1 max-h-56 overflow-y-auto">
+          <ul className="absolute left-0 right-0 mt-2 bg-white/95 backdrop-blur-md border border-gray-200 rounded-lg shadow-xl z-50 max-h-56 overflow-y-auto">
             {filteredSuggestions.map((doc) => (
               <li
                 key={doc.id}
-                className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                className="px-4 py-2 hover:bg-blue-50 cursor-pointer transition-colors duration-150"
                 onMouseDown={() => handleSuggestionClick(doc)}
               >
-                <span className="font-medium">{doc.doctorName}</span>
+                <span className="font-medium text-gray-800">{doc.doctorName}</span>
                 <span className="text-gray-500 ml-2 text-sm">
                   ({doc.specialty})
                 </span>
@@ -197,59 +208,64 @@ const Navbar = () => {
           </ul>
         )}
       </div>
+
+      {/* Mobile menu */}
       <ul
-        className={`md:hidden absolute top-full left-0 w-full bg-slate-100 px-6 py-4 flex flex-col space-y-4 font-semibold transition-all duration-300 ${
-          open ? "opacity-100 visible" : "opacity-0 invisible"
+        className={`md:hidden absolute top-full left-0 w-full bg-gradient-to-b from-blue-600 to-indigo-600 text-white px-6 py-4 flex flex-col space-y-4 font-semibold transition-all duration-300 ${
+          open ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-4"
         }`}
       >
         <li>
-          <Link to="/" className="block">
+          <Link to="/" className="block hover:text-blue-200 transition-colors duration-200">
             Home
           </Link>
         </li>
         <li>
-          <Link to="/about" className="block">
+          <Link to="/about" className="block hover:text-blue-200 transition-colors duration-200">
             About
           </Link>
         </li>
         <li>
-          <Link to="/doctor-appointment" className="block">
-            Appoinment
+          <Link to="/doctor-appointment" className="block hover:text-blue-200 transition-colors duration-200">
+            Appointment
           </Link>
         </li>
-        {!isLoggedIn && (
+        {!isAuthenticated && (
           <>
             <li>
-              <Link to="/login" className="block">
+              <Link to="/login" className="block hover:text-blue-200 transition-colors duration-200">
                 Login
               </Link>
             </li>
             <li>
-              <Link to="/signup" className="block">
+              <Link
+                to="/signup"
+                className="block bg-white text-blue-600 px-4 py-1.5 rounded-full hover:bg-blue-100 transition-colors duration-200 text-center"
+              >
                 Sign Up
               </Link>
             </li>
           </>
         )}
-        {isLoggedIn && (
+        {isAuthenticated && (
           <li className="relative">
             <div
-              className="flex items-center gap-2 cursor-pointer"
+              className="flex items-center gap-2 cursor-pointer hover:text-blue-200 transition-colors duration-200"
               onClick={handleUserIconClick}
             >
               <FaUserCircle size={28} />
-              <span>User</span>
+              <span>{user?.name || 'User'}</span>
             </div>
             {userMenuOpen && (
-              <div className="absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
+              <div className="absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-md border border-gray-200 rounded-lg shadow-xl z-50">
                 <button
-                  className="block w-full text-left px-4 py-2 hover:bg-blue-100"
+                  className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-blue-50 transition-colors duration-150"
                   onClick={handleDashboard}
                 >
                   Dashboard
                 </button>
                 <button
-                  className="block w-full text-left px-4 py-2 hover:bg-blue-100"
+                  className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-blue-50 transition-colors duration-150"
                   onClick={handleLogout}
                 >
                   Logout

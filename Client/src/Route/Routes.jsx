@@ -2,7 +2,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
 // Pages
-
 import Main from "../layout/main";
 import Home from "../Home/home";
 import Footer from "../Components/Footer/Footer";
@@ -13,6 +12,14 @@ import PatientProfile from "../Components/Profile/PatientProfile";
 import DoctorAppSystem from "../Components/Appointment/DoctorAppSystem";
 import DoctorDetails from "../Components/Appointment/DoctorDetails";
 import About from "../Home/About";
+
+// Dashboard Components
+import PatientDashboard from "../Components/Dashboard/PatientDashboard";
+import DoctorDashboard from "../Components/Dashboard/DoctorDashboard";
+import AdminDashboard from "../Components/Dashboard/AdminDashboard";
+
+// Protected Route Component
+import ProtectedRoute from "../components/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -54,6 +61,31 @@ export const router = createBrowserRouter([
       {
         path: "/doctor/:id",
         element: <DoctorDetails />,
+      },
+      // Dashboard Routes
+      {
+        path: "/patient/dashboard",
+        element: (
+          <ProtectedRoute requiredRoles={['patient']}>
+            <PatientDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/doctor/dashboard",
+        element: (
+          <ProtectedRoute requiredRoles={['doctor']}>
+            <DoctorDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin/dashboard",
+        element: (
+          <ProtectedRoute requiredRoles={['admin']}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

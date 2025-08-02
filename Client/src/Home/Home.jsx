@@ -413,7 +413,7 @@ const Home = () => {
 
       {/* FAQ Section */}
       <section
-        className="py-16 px-6 md:px-20 bg-white animate-fade-in-up"
+        className="py-16 px-6 md:px-20 bg-white text-white animate-fade-in-up"
         style={{ animationDelay: "0.8s" }}
       >
         <h2 className="text-3xl font-bold text-center mb-10">
