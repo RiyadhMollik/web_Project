@@ -17,10 +17,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Import routes
 const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
+const appointmentRoutes = require('./routes/appointment.routes');
 
 // Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/appointments', appointmentRoutes);
 
 // Basic route
 app.get('/', (req, res) => {
@@ -35,12 +37,22 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
-  
+
   // Test database connection
   await testConnection();
-  
+
   // Sync database tables
   await syncDatabase();
+
+  // Seed doctor schedules (optional - for development)
+  if (process.env.NODE_ENV === 'development') {
+    try {
+      const { seedDoctorSchedules } = require('./seeders/doctorSchedules');
+      await seedDoctorSchedules();
+    } catch (error) {
+      console.log('Note: Doctor schedules seeder not available');
+    }
+  }
 });
 
 module.exports = app;
