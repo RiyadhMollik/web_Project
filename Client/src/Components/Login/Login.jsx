@@ -6,7 +6,7 @@ const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  
+
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -33,16 +33,18 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-6">
+    <div className="min-h-screen flex items-center justify-center bg-white px-6">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow">
-        <h2 className="text-2xl font-bold text-center mb-6">Login to CureSync</h2>
-        
+        <h2 className="text-2xl font-bold text-center mb-6 text-primary">
+          Login to CureSync
+        </h2>
+
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
             {error}
           </div>
         )}
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="email"
@@ -68,9 +70,9 @@ const Login = () => {
             {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
-        <p className="mt-4 text-center text-sm text-gray-600">
+        <p className="mt-4 text-center text-sm text-secondary">
           Don't have an account?{" "}
-          <Link to="/signup" className="text-blue-600 text-black font-medium hover:underline">
+          <Link to="/signup" className="text-info font-medium hover:underline">
             Sign up
           </Link>
         </p>

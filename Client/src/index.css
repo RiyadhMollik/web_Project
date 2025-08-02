@@ -1,2 +1,210 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* Global color pattern fixes for better text visibility */
+:root {
+  --primary-text: #000000;
+  --secondary-text: #374151;
+  --light-text: #6b7280;
+  --white-text: #ffffff;
+  --error-text: #dc2626;
+  --success-text: #059669;
+  --warning-text: #d97706;
+  --info-text: #2563eb;
+  --nav-bg: #2563eb;
+  --nav-text: #ffffff;
+}
+
+/* Base text color fixes */
+body {
+  color: var(--primary-text);
+  background-color: #ffffff;
+}
+
+/* Input field improvements */
+input, textarea, select {
+  color: var(--primary-text) !important;
+  background-color: #ffffff !important;
+  border-color: #d1d5db !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--light-text) !important;
+  opacity: 1;
+}
+
+/* Focus states with better visibility */
+input:focus, textarea:focus, select:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+  outline: none !important;
+}
+
+/* Button text visibility */
+button {
+  color: var(--white-text) !important;
+}
+
+button:disabled {
+  color: #9ca3af !important;
+  background-color: #d1d5db !important;
+}
+
+/* Card and container backgrounds */
+.bg-white {
+  background-color: #ffffff !important;
+}
+
+/* Text color utilities */
+.text-primary {
+  color: var(--primary-text) !important;
+}
+
+.text-secondary {
+  color: var(--secondary-text) !important;
+}
+
+.text-light {
+  color: var(--light-text) !important;
+}
+
+.text-white {
+  color: var(--white-text) !important;
+}
+
+/* Navigation specific styles */
+header {
+  background: var(--nav-bg) !important;
+  color: var(--nav-text) !important;
+}
+
+.nav-link {
+  color: var(--nav-text) !important;
+}
+
+.nav-link:hover {
+  color: #bfdbfe !important;
+}
+
+/* Error and success message improvements */
+.bg-red-100 {
+  background-color: #fef2f2 !important;
+  border-color: #fecaca !important;
+  color: var(--error-text) !important;
+}
+
+.bg-green-100 {
+  background-color: #f0fdf4 !important;
+  border-color: #bbf7d0 !important;
+  color: var(--success-text) !important;
+}
+
+.bg-yellow-100 {
+  background-color: #fffbeb !important;
+  border-color: #fed7aa !important;
+  color: var(--warning-text) !important;
+}
+
+.bg-blue-100 {
+  background-color: #eff6ff !important;
+  border-color: #bfdbfe !important;
+  color: var(--info-text) !important;
+}
+
+/* Dropdown and menu improvements */
+.dropdown-menu {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(8px) !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.dropdown-menu a, .dropdown-menu button {
+  color: var(--primary-text) !important;
+}
+
+.dropdown-menu a:hover, .dropdown-menu button:hover {
+  background-color: #f3f4f6 !important;
+}
+
+/* Form label improvements */
+label {
+  color: var(--secondary-text) !important;
+  font-weight: 500 !important;
+}
+
+/* Link improvements */
+a {
+  color: var(--info-text) !important;
+}
+
+a:hover {
+  color: #1d4ed8 !important;
+}
+
+/* Table improvements */
+table {
+  color: var(--primary-text) !important;
+}
+
+th {
+  color: var(--secondary-text) !important;
+  background-color: #f9fafb !important;
+}
+
+td {
+  color: var(--primary-text) !important;
+}
+
+/* Modal and overlay improvements */
+.modal {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.modal-content {
+  background-color: #ffffff !important;
+  color: var(--primary-text) !important;
+}
+
+/* Page background */
+.min-h-screen {
+  background-color: #ffffff !important;
+}
+
+.bg-gray-50 {
+  background-color: #ffffff !important;
+}
+
+/* Dashboard specific styles */
+.dashboard-container {
+  background-color: #ffffff !important;
+}
+
+/* Card backgrounds */
+.shadow {
+  background-color: #ffffff !important;
+}
+
+/* Remove any gray backgrounds */
+.bg-gray-100, .bg-gray-200, .bg-gray-300, .bg-gray-400, .bg-gray-500 {
+  background-color: #ffffff !important;
+}
+
+/* Ensure all text is black by default */
+p, h1, h2, h3, h4, h5, h6, span, div {
+  color: var(--primary-text) !important;
+}
+
+/* Navigation text specifically white */
+header h1, header h2, header h3, header p, header span, header div {
+  color: var(--nav-text) !important;
+}
+
+/* Override any existing gray text */
+.text-gray-900, .text-gray-800, .text-gray-700, .text-gray-600, .text-gray-500 {
+  color: var(--primary-text) !important;
+}
+
+/* Keep navigation elements white */
+header a, header button, header .text-white {
+  color: var(--nav-text) !important;
+}

@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { userService } from '../../services/authService';
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { userService } from "../../services/authService";
 
 const DoctorDashboard = () => {
   const { user, updateProfile, logout } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
-    name: user?.name || '',
-    phone: user?.phone || '',
-    address: user?.address || '',
-    dateOfBirth: user?.dateOfBirth || '',
-    gender: user?.gender || '',
-    specialization: user?.specialization || '',
-    licenseNumber: user?.licenseNumber || '',
-    experience: user?.experience || ''
+    name: user?.name || "",
+    phone: user?.phone || "",
+    address: user?.address || "",
+    dateOfBirth: user?.dateOfBirth || "",
+    gender: user?.gender || "",
+    specialization: user?.specialization || "",
+    licenseNumber: user?.licenseNumber || "",
+    experience: user?.experience || "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [patients, setPatients] = useState([]);
   const [loadingPatients, setLoadingPatients] = useState(false);
 
@@ -27,10 +27,10 @@ const DoctorDashboard = () => {
   const fetchPatients = async () => {
     setLoadingPatients(true);
     try {
-      const response = await userService.getUsersByRole('patient');
+      const response = await userService.getUsersByRole("patient");
       setPatients(response.users || []);
     } catch (error) {
-      console.error('Error fetching patients:', error);
+      console.error("Error fetching patients:", error);
     } finally {
       setLoadingPatients(false);
     }
@@ -39,14 +39,14 @@ const DoctorDashboard = () => {
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setMessage('');
+    setMessage("");
 
     try {
       await updateProfile(profileData);
-      setMessage('Profile updated successfully!');
+      setMessage("Profile updated successfully!");
       setIsEditing(false);
     } catch (error) {
-      setMessage(error.message || 'Failed to update profile');
+      setMessage(error.message || "Failed to update profile");
     } finally {
       setIsLoading(false);
     }
@@ -57,13 +57,15 @@ const DoctorDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="bg-white shadow rounded-lg mb-6">
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex justify-between items-center">
-              <h1 className="text-2xl font-bold text-gray-900">Doctor Dashboard</h1>
+              <h1 className="text-2xl font-bold text-primary">
+                Doctor Dashboard
+              </h1>
               <button
                 onClick={handleLogout}
                 className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition"
@@ -80,23 +82,27 @@ const DoctorDashboard = () => {
             <div className="bg-white shadow rounded-lg">
               <div className="px-6 py-4 border-b border-gray-200">
                 <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-semibold text-gray-900">Doctor Profile</h2>
+                  <h2 className="text-xl font-semibold text-gray-900">
+                    Doctor Profile
+                  </h2>
                   <button
                     onClick={() => setIsEditing(!isEditing)}
                     className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
                   >
-                    {isEditing ? 'Cancel' : 'Edit Profile'}
+                    {isEditing ? "Cancel" : "Edit Profile"}
                   </button>
                 </div>
               </div>
-              
+
               <div className="p-6">
                 {message && (
-                  <div className={`mb-4 p-3 rounded ${
-                    message.includes('successfully') 
-                      ? 'bg-green-100 text-green-700 border border-green-400' 
-                      : 'bg-red-100 text-red-700 border border-red-400'
-                  }`}>
+                  <div
+                    className={`mb-4 p-3 rounded ${
+                      message.includes("successfully")
+                        ? "bg-green-100 text-green-700 border border-green-400"
+                        : "bg-red-100 text-red-700 border border-red-400"
+                    }`}
+                  >
                     {message}
                   </div>
                 )}
@@ -112,12 +118,17 @@ const DoctorDashboard = () => {
                           type="text"
                           name="name"
                           value={profileData.name}
-                          onChange={(e) => setProfileData({...profileData, name: e.target.value})}
+                          onChange={(e) =>
+                            setProfileData({
+                              ...profileData,
+                              name: e.target.value,
+                            })
+                          }
                           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
                           required
                         />
                       </div>
-                      
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           Phone Number
@@ -126,11 +137,16 @@ const DoctorDashboard = () => {
                           type="tel"
                           name="phone"
                           value={profileData.phone}
-                          onChange={(e) => setProfileData({...profileData, phone: e.target.value})}
+                          onChange={(e) =>
+                            setProfileData({
+                              ...profileData,
+                              phone: e.target.value,
+                            })
+                          }
                           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
                         />
                       </div>
-                      
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           Specialization
@@ -139,11 +155,16 @@ const DoctorDashboard = () => {
                           type="text"
                           name="specialization"
                           value={profileData.specialization}
-                          onChange={(e) => setProfileData({...profileData, specialization: e.target.value})}
+                          onChange={(e) =>
+                            setProfileData({
+                              ...profileData,
+                              specialization: e.target.value,
+                            })
+                          }
                           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
                         />
                       </div>
-                      
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           License Number
@@ -152,11 +173,16 @@ const DoctorDashboard = () => {
                           type="text"
                           name="licenseNumber"
                           value={profileData.licenseNumber}
-                          onChange={(e) => setProfileData({...profileData, licenseNumber: e.target.value})}
+                          onChange={(e) =>
+                            setProfileData({
+                              ...profileData,
+                              licenseNumber: e.target.value,
+                            })
+                          }
                           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
                         />
                       </div>
-                      
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           Years of Experience
@@ -165,11 +191,16 @@ const DoctorDashboard = () => {
                           type="number"
                           name="experience"
                           value={profileData.experience}
-                          onChange={(e) => setProfileData({...profileData, experience: e.target.value})}
+                          onChange={(e) =>
+                            setProfileData({
+                              ...profileData,
+                              experience: e.target.value,
+                            })
+                          }
                           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
                         />
                       </div>
-                      
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           Gender
@@ -177,7 +208,12 @@ const DoctorDashboard = () => {
                         <select
                           name="gender"
                           value={profileData.gender}
-                          onChange={(e) => setProfileData({...profileData, gender: e.target.value})}
+                          onChange={(e) =>
+                            setProfileData({
+                              ...profileData,
+                              gender: e.target.value,
+                            })
+                          }
                           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
                         >
                           <option value="">Select Gender</option>
@@ -187,7 +223,7 @@ const DoctorDashboard = () => {
                         </select>
                       </div>
                     </div>
-                    
+
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Address
@@ -195,12 +231,17 @@ const DoctorDashboard = () => {
                       <textarea
                         name="address"
                         value={profileData.address}
-                        onChange={(e) => setProfileData({...profileData, address: e.target.value})}
+                        onChange={(e) =>
+                          setProfileData({
+                            ...profileData,
+                            address: e.target.value,
+                          })
+                        }
                         rows="3"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
                       />
                     </div>
-                    
+
                     <div className="flex justify-end space-x-3">
                       <button
                         type="button"
@@ -214,43 +255,75 @@ const DoctorDashboard = () => {
                         disabled={isLoading}
                         className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:bg-blue-400"
                       >
-                        {isLoading ? 'Saving...' : 'Save Changes'}
+                        {isLoading ? "Saving..." : "Save Changes"}
                       </button>
                     </div>
                   </form>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                      <p className="text-gray-900">{user?.name || 'Not provided'}</p>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Full Name
+                      </label>
+                      <p className="text-gray-900">
+                        {user?.name || "Not provided"}
+                      </p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Email
+                      </label>
                       <p className="text-gray-900">{user?.email}</p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                      <p className="text-gray-900">{user?.phone || 'Not provided'}</p>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Phone
+                      </label>
+                      <p className="text-gray-900">
+                        {user?.phone || "Not provided"}
+                      </p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Specialization</label>
-                      <p className="text-gray-900">{user?.specialization || 'Not provided'}</p>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Specialization
+                      </label>
+                      <p className="text-gray-900">
+                        {user?.specialization || "Not provided"}
+                      </p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">License Number</label>
-                      <p className="text-gray-900">{user?.licenseNumber || 'Not provided'}</p>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        License Number
+                      </label>
+                      <p className="text-gray-900">
+                        {user?.licenseNumber || "Not provided"}
+                      </p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Experience</label>
-                      <p className="text-gray-900">{user?.experience ? `${user.experience} years` : 'Not provided'}</p>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Experience
+                      </label>
+                      <p className="text-gray-900">
+                        {user?.experience
+                          ? `${user.experience} years`
+                          : "Not provided"}
+                      </p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-                      <p className="text-gray-900">{user?.gender || 'Not provided'}</p>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Gender
+                      </label>
+                      <p className="text-gray-900">
+                        {user?.gender || "Not provided"}
+                      </p>
                     </div>
                     <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                      <p className="text-gray-900">{user?.address || 'Not provided'}</p>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Address
+                      </label>
+                      <p className="text-gray-900">
+                        {user?.address || "Not provided"}
+                      </p>
                     </div>
                   </div>
                 )}
@@ -260,7 +333,9 @@ const DoctorDashboard = () => {
             {/* Patients List */}
             <div className="bg-white shadow rounded-lg mt-6">
               <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-xl font-semibold text-gray-900">My Patients</h2>
+                <h2 className="text-xl font-semibold text-gray-900">
+                  My Patients
+                </h2>
               </div>
               <div className="p-6">
                 {loadingPatients ? (
@@ -299,10 +374,10 @@ const DoctorDashboard = () => {
                               {patient.email}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {patient.phone || 'N/A'}
+                              {patient.phone || "N/A"}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {patient.bloodGroup || 'N/A'}
+                              {patient.bloodGroup || "N/A"}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                               <button className="text-blue-600 hover:text-blue-900 mr-3">
@@ -318,7 +393,9 @@ const DoctorDashboard = () => {
                     </table>
                   </div>
                 ) : (
-                  <p className="text-gray-500 text-center py-8">No patients found.</p>
+                  <p className="text-gray-500 text-center py-8">
+                    No patients found.
+                  </p>
                 )}
               </div>
             </div>
@@ -328,7 +405,9 @@ const DoctorDashboard = () => {
           <div className="lg:col-span-1">
             <div className="bg-white shadow rounded-lg">
               <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-xl font-semibold text-gray-900">Quick Actions</h2>
+                <h2 className="text-xl font-semibold text-gray-900">
+                  Quick Actions
+                </h2>
               </div>
               <div className="p-6 space-y-4">
                 <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition">
@@ -349,25 +428,43 @@ const DoctorDashboard = () => {
             {/* Statistics */}
             <div className="bg-white shadow rounded-lg mt-6">
               <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-xl font-semibold text-gray-900">Statistics</h2>
+                <h2 className="text-xl font-semibold text-gray-900">
+                  Statistics
+                </h2>
               </div>
               <div className="p-6">
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Total Patients</span>
-                    <span className="text-lg font-semibold text-blue-600">{patients.length}</span>
+                    <span className="text-sm text-gray-600">
+                      Total Patients
+                    </span>
+                    <span className="text-lg font-semibold text-blue-600">
+                      {patients.length}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Today's Appointments</span>
-                    <span className="text-lg font-semibold text-green-600">5</span>
+                    <span className="text-sm text-gray-600">
+                      Today's Appointments
+                    </span>
+                    <span className="text-lg font-semibold text-green-600">
+                      5
+                    </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Pending Reports</span>
-                    <span className="text-lg font-semibold text-orange-600">3</span>
+                    <span className="text-sm text-gray-600">
+                      Pending Reports
+                    </span>
+                    <span className="text-lg font-semibold text-orange-600">
+                      3
+                    </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Emergency Cases</span>
-                    <span className="text-lg font-semibold text-red-600">1</span>
+                    <span className="text-sm text-gray-600">
+                      Emergency Cases
+                    </span>
+                    <span className="text-lg font-semibold text-red-600">
+                      1
+                    </span>
                   </div>
                 </div>
               </div>
@@ -379,4 +476,4 @@ const DoctorDashboard = () => {
   );
 };
 
-export default DoctorDashboard; 
+export default DoctorDashboard;

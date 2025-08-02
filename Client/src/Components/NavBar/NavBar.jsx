@@ -40,9 +40,9 @@ const Navbar = () => {
 
   const handleDashboard = () => {
     setUserMenuOpen(false);
-    if (user?.role === 'admin') {
+    if (user?.role === "admin") {
       navigate("/admin/dashboard");
-    } else if (user?.role === 'doctor') {
+    } else if (user?.role === "doctor") {
       navigate("/doctor/dashboard");
     } else {
       navigate("/patient/dashboard");
@@ -64,7 +64,7 @@ const Navbar = () => {
     : [];
 
   return (
-    <header className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg z-50 flex justify-between items-center h-16 px-4 md:px-8 relative">
+    <header className="bg-blue-600 text-white shadow-lg z-50 flex justify-between items-center h-16 px-4 md:px-8 relative">
       {/* Logo */}
       <Link
         to="/"
@@ -96,7 +96,9 @@ const Navbar = () => {
                 className="px-4 py-2 hover:bg-blue-50 cursor-pointer transition-colors duration-150"
                 onMouseDown={() => handleSuggestionClick(doc)}
               >
-                <span className="font-medium text-gray-800">{doc.doctorName}</span>
+                <span className="font-medium text-gray-800">
+                  {doc.doctorName}
+                </span>
                 <span className="text-gray-500 ml-2 text-sm">
                   ({doc.specialty})
                 </span>
@@ -109,24 +111,36 @@ const Navbar = () => {
       {/* Desktop menu */}
       <ul className="hidden md:flex items-center space-x-6 font-medium">
         <li>
-          <Link to="/" className="hover:text-blue-200 transition-colors duration-200">
+          <Link
+            to="/"
+            className="hover:text-blue-200 transition-colors duration-200"
+          >
             Home
           </Link>
         </li>
         <li>
-          <Link to="/about" className="hover:text-blue-200 transition-colors duration-200">
+          <Link
+            to="/about"
+            className="hover:text-blue-200 transition-colors duration-200"
+          >
             About
           </Link>
         </li>
         <li>
-          <Link to="/doctor-appointment" className="hover:text-blue-200 transition-colors duration-200">
+          <Link
+            to="/doctor-appointment"
+            className="hover:text-blue-200 transition-colors duration-200"
+          >
             Appointment
           </Link>
         </li>
         {!isAuthenticated && (
           <>
             <li>
-              <Link to="/login" className="hover:text-blue-200 transition-colors duration-200">
+              <Link
+                to="/login"
+                className="hover:text-blue-200 transition-colors duration-200"
+              >
                 Login
               </Link>
             </li>
@@ -178,7 +192,9 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Search Bar */}
-      <div className={`md:hidden px-4 py-2 relative ${open ? 'block' : 'hidden'}`}>
+      <div
+        className={`md:hidden px-4 py-2 relative ${open ? "block" : "hidden"}`}
+      >
         <form onSubmit={handleSearchSubmit}>
           <input
             type="text"
@@ -199,7 +215,9 @@ const Navbar = () => {
                 className="px-4 py-2 hover:bg-blue-50 cursor-pointer transition-colors duration-150"
                 onMouseDown={() => handleSuggestionClick(doc)}
               >
-                <span className="font-medium text-gray-800">{doc.doctorName}</span>
+                <span className="font-medium text-gray-800">
+                  {doc.doctorName}
+                </span>
                 <span className="text-gray-500 ml-2 text-sm">
                   ({doc.specialty})
                 </span>
@@ -211,29 +229,43 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       <ul
-        className={`md:hidden absolute top-full left-0 w-full bg-gradient-to-b from-blue-600 to-indigo-600 text-white px-6 py-4 flex flex-col space-y-4 font-semibold transition-all duration-300 ${
-          open ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-4"
+        className={`md:hidden absolute top-full left-0 w-full bg-blue-600 text-white px-6 py-4 flex flex-col space-y-4 font-semibold transition-all duration-300 ${
+          open
+            ? "opacity-100 visible translate-y-0"
+            : "opacity-0 invisible -translate-y-4"
         }`}
       >
         <li>
-          <Link to="/" className="block hover:text-blue-200 transition-colors duration-200">
+          <Link
+            to="/"
+            className="block hover:text-blue-200 transition-colors duration-200"
+          >
             Home
           </Link>
         </li>
         <li>
-          <Link to="/about" className="block hover:text-blue-200 transition-colors duration-200">
+          <Link
+            to="/about"
+            className="block hover:text-blue-200 transition-colors duration-200"
+          >
             About
           </Link>
         </li>
         <li>
-          <Link to="/doctor-appointment" className="block hover:text-blue-200 transition-colors duration-200">
+          <Link
+            to="/doctor-appointment"
+            className="block hover:text-blue-200 transition-colors duration-200"
+          >
             Appointment
           </Link>
         </li>
         {!isAuthenticated && (
           <>
             <li>
-              <Link to="/login" className="block hover:text-blue-200 transition-colors duration-200">
+              <Link
+                to="/login"
+                className="block hover:text-blue-200 transition-colors duration-200"
+              >
                 Login
               </Link>
             </li>
@@ -254,7 +286,7 @@ const Navbar = () => {
               onClick={handleUserIconClick}
             >
               <FaUserCircle size={28} />
-              <span>{user?.name || 'User'}</span>
+              <span>{user?.name || "User"}</span>
             </div>
             {userMenuOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-md border border-gray-200 rounded-lg shadow-xl z-50">

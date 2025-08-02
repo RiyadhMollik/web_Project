@@ -17,11 +17,11 @@ const Signup = () => {
     licenseNumber: "",
     experience: "",
     bloodGroup: "",
-    emergencyContact: ""
+    emergencyContact: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  
+
   const { register } = useAuth();
   const navigate = useNavigate();
 
@@ -60,16 +60,18 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-6">
+    <div className="min-h-screen flex items-center justify-center bg-white px-6">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow">
-        <h2 className="text-2xl font-bold text-black text-center mb-6">Create a CureSync Account</h2>
-        
+        <h2 className="text-2xl font-bold text-primary text-center mb-6">
+          Create a CureSync Account
+        </h2>
+
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
             {error}
           </div>
         )}
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
@@ -95,7 +97,7 @@ const Signup = () => {
             className="w-full px-4 py-2 border text-black rounded-md focus:outline-none focus:ring focus:ring-blue-300"
             onChange={handleChange}
           />
-          
+
           <input
             type="password"
             name="confirmPassword"
@@ -125,7 +127,7 @@ const Signup = () => {
             className="w-full px-4 py-2 border text-black rounded-md focus:outline-none focus:ring focus:ring-blue-300"
             onChange={handleChange}
           />
-          
+
           <textarea
             name="address"
             placeholder="Address"
@@ -133,7 +135,7 @@ const Signup = () => {
             onChange={handleChange}
             rows="2"
           />
-          
+
           <input
             type="date"
             name="dateOfBirth"
@@ -141,7 +143,7 @@ const Signup = () => {
             className="w-full px-4 py-2 border text-black rounded-md focus:outline-none focus:ring focus:ring-blue-300"
             onChange={handleChange}
           />
-          
+
           <select
             name="gender"
             value={formData.gender}
@@ -155,7 +157,7 @@ const Signup = () => {
           </select>
 
           {/* Doctor-specific fields */}
-          {formData.role === 'doctor' && (
+          {formData.role === "doctor" && (
             <>
               <input
                 type="text"
@@ -182,7 +184,7 @@ const Signup = () => {
           )}
 
           {/* Patient-specific fields */}
-          {formData.role === 'patient' && (
+          {formData.role === "patient" && (
             <>
               <select
                 name="bloodGroup"
@@ -218,9 +220,9 @@ const Signup = () => {
             {isLoading ? "Creating Account..." : "Sign Up"}
           </button>
         </form>
-        <p className="mt-4 text-center text-sm text-gray-600">
+        <p className="mt-4 text-center text-sm text-secondary">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-600 font-medium hover:underline">
+          <Link to="/login" className="text-info font-medium hover:underline">
             Log in
           </Link>
         </p>
