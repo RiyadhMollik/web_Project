@@ -23,10 +23,11 @@ const sequelize = new Sequelize(
 
 // Import and initialize models
 const User = require('./User')(sequelize);
-const Appointment = require('./Appointment');
-const DoctorSchedule = require('./DoctorSchedule');
+const Appointment = require('./Appointment')(sequelize);
+const DoctorSchedule = require('./DoctorSchedule')(sequelize);
+const Review = require('./Review')(sequelize);
 
-const models = { User, Appointment, DoctorSchedule };
+const models = { User, Appointment, DoctorSchedule, Review };
 
 // Define associations
 User.hasMany(Appointment, { as: 'patientAppointments', foreignKey: 'patientId' });
@@ -38,6 +39,12 @@ Appointment.belongsTo(User, { as: 'doctor', foreignKey: 'doctorId' });
 Appointment.belongsTo(DoctorSchedule, { as: 'schedule', foreignKey: 'scheduleId' });
 
 DoctorSchedule.belongsTo(User, { as: 'doctor', foreignKey: 'doctorId' });
+
+// Review associations
+User.hasMany(Review, { foreignKey: 'patientId', as: 'patientReviews' });
+User.hasMany(Review, { foreignKey: 'doctorId', as: 'doctorReviews' });
+Review.belongsTo(User, { foreignKey: 'patientId', as: 'patient' });
+Review.belongsTo(User, { foreignKey: 'doctorId', as: 'doctor' });
 
 // Sync database
 const syncDatabase = async () => {
@@ -66,5 +73,6 @@ module.exports = {
   testConnection,
   User,
   Appointment,
-  DoctorSchedule
+  DoctorSchedule,
+  Review
 };

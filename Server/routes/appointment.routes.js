@@ -24,4 +24,7 @@ router.get('/available-slots', appointmentController.getAvailableSlots);
 // Get doctor schedules
 router.get('/doctor/:doctorId/schedules', appointmentController.getDoctorSchedules);
 
+// Get doctor details
+router.get('/doctor/:doctorId/details', appointmentController.getDoctorDetails);
+
 module.exports = router;

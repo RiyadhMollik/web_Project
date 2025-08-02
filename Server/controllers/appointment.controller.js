@@ -348,7 +348,9 @@ const getAvailableSlots = async (req, res) => {
 
         // Get doctor's schedules for the day of week
         const appointmentDate = new Date(date);
-        const dayOfWeek = appointmentDate.toLocaleDateString('en-US', { weekday: 'lowercase' });
+        const dayOfWeek = appointmentDate.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
+
+        console.log('Looking for schedules on:', dayOfWeek, 'for doctor:', doctorId);
 
         const schedules = await DoctorSchedule.findAll({
             where: {
@@ -357,6 +359,8 @@ const getAvailableSlots = async (req, res) => {
                 isActive: true
             }
         });
+
+        console.log('Found schedules:', schedules.length);
 
         if (schedules.length === 0) {
             return res.json({ availableSlots: [] });
@@ -380,6 +384,8 @@ const getAvailableSlots = async (req, res) => {
         const availableSlots = [];
 
         schedules.forEach(schedule => {
+            console.log('Processing schedule:', schedule.hospitalName, schedule.startTime, schedule.endTime);
+            
             const startTime = new Date(`2000-01-01 ${schedule.startTime}`);
             const endTime = new Date(`2000-01-01 ${schedule.endTime}`);
 
@@ -403,6 +409,7 @@ const getAvailableSlots = async (req, res) => {
             }
         });
 
+        console.log('Generated slots:', availableSlots.length);
         res.json({ availableSlots });
 
     } catch (error) {
@@ -435,6 +442,46 @@ const getDoctorSchedules = async (req, res) => {
     }
 };
 
+// Get doctor details by ID
+const getDoctorDetails = async (req, res) => {
+    try {
+        const { doctorId } = req.params;
+
+        const doctor = await User.findOne({
+            where: {
+                id: doctorId,
+                role: 'doctor',
+                isActive: true
+            },
+            attributes: [
+                'id', 'name', 'email', 'phone', 'address', 'dateOfBirth',
+                'gender', 'specialization', 'licenseNumber', 'experience'
+            ]
+        });
+
+        if (!doctor) {
+            return res.status(404).json({
+                success: false,
+                message: 'Doctor not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            message: 'Doctor details retrieved successfully',
+            user: doctor
+        });
+
+    } catch (error) {
+        console.error('Error getting doctor details:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to get doctor details',
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     bookAppointment,
     getAppointments,
@@ -442,5 +489,6 @@ module.exports = {
     updateAppointmentStatus,
     cancelAppointment,
     getAvailableSlots,
-    getDoctorSchedules
+    getDoctorSchedules,
+    getDoctorDetails
 }; 
