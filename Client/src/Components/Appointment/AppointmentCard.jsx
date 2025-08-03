@@ -34,7 +34,7 @@ const AppointmentCard = ({ doctor, specialization, hospital, date, time, rating,
                         backgroundColor: available ? '#d5f4e6' : '#fadbd8',
                         color: available ? '#27ae60' : '#e74c3c'
                     }}>
-                        {available ? 'Available' : 'Unavailable'}
+                      {available ? 'Available' : 'Unavailable'}
                     </span>
                 </div>
             </div>
