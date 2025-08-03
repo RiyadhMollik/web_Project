@@ -128,6 +128,22 @@ const Navbar = () => {
         </li>
         <li>
           <Link
+            to="/features"
+            className="hover:text-blue-200 transition-colors duration-200"
+          >
+            Features
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/blog"
+            className="hover:text-blue-200 transition-colors duration-200"
+          >
+            Blog
+          </Link>
+        </li>
+        <li>
+          <Link
             to="/doctor-appointment"
             className="hover:text-blue-200 transition-colors duration-200"
           >
@@ -249,6 +265,22 @@ const Navbar = () => {
             className="block hover:text-blue-200 transition-colors duration-200"
           >
             About
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/features"
+            className="block hover:text-blue-200 transition-colors duration-200"
+          >
+            Features
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/blog"
+            className="block hover:text-blue-200 transition-colors duration-200"
+          >
+            Blog
           </Link>
         </li>
         <li>

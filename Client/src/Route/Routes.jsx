@@ -16,6 +16,7 @@ import InvoiceList from "../Components/Invoice/InvoiceList";
 import DoctorApprovalForm from "../Components/DoctorApproval/DoctorApprovalForm";
 import DoctorApprovalManager from "../Components/Admin/DoctorApprovalManager";
 import About from "../Home/About";
+import Features from "../Features/Features";
 
 // Dashboard Components
 import PatientDashboard from "../Components/Dashboard/PatientDashboard";
@@ -25,6 +26,7 @@ import AdminDashboard from "../Components/Dashboard/AdminDashboard";
 // Protected Route Component
 import ProtectedRoute from "../components/ProtectedRoute";
 import Blog from "../Blog/Blog";
+import BlogDetail from "../Blog/BlogDetail";
 
 export const router = createBrowserRouter([
   {
@@ -40,8 +42,16 @@ export const router = createBrowserRouter([
         element: <About />,
       },
       {
+        path: "/features",
+        element: <Features />,
+      },
+      {
         path: "/blog",
         element: <Blog />,
+      },
+      {
+        path: "/blog/:id",
+        element: <BlogDetail />,
       },
       {
         path: "/footer",

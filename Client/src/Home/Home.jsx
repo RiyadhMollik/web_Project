@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import HomepageAppointment from "../Components/Appointment/HomepageAppointment";
-import Blog from "../Blog/Blog";
+import BlogPreview from "../Blog/BlogPreview";
 import NewsletterSubscription from "../NewsletterSubscription/NewsletterSubscription";
 import TestimonialSection from "../TestimonialSection/TestimonialSection";
  // ensure this image exists
@@ -195,7 +195,7 @@ const Home = () => {
       <HomepageAppointment />
 
       {/* CTA Section */}
-      <Blog />
+      <BlogPreview />
       <TestimonialSection />
       <NewsletterSubscription />
     </div>
