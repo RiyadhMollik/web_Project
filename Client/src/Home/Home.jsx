@@ -1,5 +1,10 @@
 import React from "react";
+import { motion } from "framer-motion";
 import HomepageAppointment from "../Components/Appointment/HomepageAppointment";
+import Blog from "../Blog/Blog";
+import NewsletterSubscription from "../NewsletterSubscription/NewsletterSubscription";
+import TestimonialSection from "../TestimonialSection/TestimonialSection";
+ // ensure this image exists
 
 const Home = () => {
   return (
@@ -13,76 +18,99 @@ const Home = () => {
       {/* Hero Section */}
       <div
         style={{
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          color: "white",
-          padding: "60px 20px",
-          textAlign: "center",
+          background: "linear-gradient(135deg, #1c92d2 0%, #f2fcfe 100%)",
+          padding: "80px 20px",
         }}
       >
-        <h1 style={{ fontSize: "2.5rem", marginBottom: "20px" }}>
-          🏠 CureSync - Connecting Patients with Verified Doctors
-        </h1>
-        <h2
-          style={{
-            fontSize: "1.5rem",
-            marginBottom: "15px",
-            fontWeight: "normal",
-          }}
-        >
-          Centralized Healthcare Platform for Patients & Doctors
-        </h2>
-        <p style={{ fontSize: "1.1rem", marginBottom: "30px", opacity: 0.9 }}>
-          Manage appointments, upload medical records, view prescriptions, and
-          access all your health services in one place.
-        </p>
         <div
           style={{
+            maxWidth: "1200px",
+            margin: "0 auto",
             display: "flex",
-            gap: "15px",
-            justifyContent: "center",
-            flexWrap: "wrap",
+            flexDirection: "column-reverse",
+            alignItems: "center",
+            gap: "40px",
+            textAlign: "center",
           }}
         >
-          <button
-            style={{
-              padding: "12px 24px",
-              backgroundColor: "#27ae60",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontSize: "16px",
-              fontWeight: "bold",
-            }}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            style={{ flex: 1 }}
           >
-            Get Started
-          </button>
-          <button
-            style={{
-              padding: "12px 24px",
-              backgroundColor: "transparent",
-              color: "white",
-              border: "2px solid white",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontSize: "16px",
-            }}
+            <h1 style={{ fontSize: "3.2rem", fontWeight: "bold", marginBottom: "20px", color: "#0d1b2a" }}>
+              CureSync — Seamlessly Connect Patients with Trusted Doctors
+            </h1>
+            <p
+              style={{
+                fontSize: "1.3rem",
+                marginBottom: "30px",
+                maxWidth: "800px",
+                margin: "0 auto",
+                lineHeight: "1.6",
+                color: "#1f3b57",
+              }}
+            >
+              Welcome to the future of healthcare. CureSync empowers patients and doctors to manage appointments, medical reports, prescriptions, and billing all in one smart platform.
+            </p>
+            <div
+              style={{
+                display: "flex",
+                gap: "15px",
+                justifyContent: "center",
+                flexWrap: "wrap",
+                marginTop: "30px",
+              }}
+            >
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                style={{
+                  padding: "14px 28px",
+                  backgroundColor: "#007BFF",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  boxShadow: "0 4px 12px rgba(0,123,255,0.2)",
+                }}
+              >
+                Get Started
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                style={{
+                  padding: "14px 28px",
+                  backgroundColor: "transparent",
+                  color: "#007BFF",
+                  border: "2px solid #007BFF",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontSize: "16px",
+                  fontWeight: "500",
+                }}
+              >
+                Learn More
+              </motion.button>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1 }}
+            style={{ flex: 1 }}
           >
-            Explore Features
-          </button>
-          <button
-            style={{
-              padding: "12px 24px",
-              backgroundColor: "transparent",
-              color: "white",
-              border: "2px solid white",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontSize: "16px",
-            }}
-          >
-            Login / Sign Up
-          </button>
+            <img
+              src="https://i.ibb.co/020000/hero-image.png"
+              alt="Doctor and patient appointment illustration"
+              style={{ maxWidth: "100%", height: "auto", borderRadius: "12px" }}
+            />
+          </motion.div>
         </div>
       </div>
 
@@ -94,6 +122,7 @@ const Home = () => {
               textAlign: "center",
               marginBottom: "40px",
               color: "#2c3e50",
+              fontSize: "2rem",
             }}
           >
             🧩 Key Features
@@ -105,7 +134,7 @@ const Home = () => {
               gap: "30px",
             }}
           >
-            {[
+            {[...[
               {
                 icon: "🔐",
                 title: "Secure Role-Based Login",
@@ -136,7 +165,7 @@ const Home = () => {
                 title: "Billing & Invoicing",
                 desc: "Auto-generate invoices and pay via mock in-app currency wallet.",
               },
-            ].map((feature, index) => (
+            ]].map((feature, index) => (
               <div
                 key={index}
                 style={{
@@ -166,57 +195,9 @@ const Home = () => {
       <HomepageAppointment />
 
       {/* CTA Section */}
-      <div
-        style={{
-          background: "linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)",
-          color: "white",
-          padding: "60px 20px",
-          textAlign: "center",
-        }}
-      >
-        <h2 style={{ fontSize: "2rem", marginBottom: "20px" }}>
-          🚀 Ready to Take Control of Your Health?
-        </h2>
-        <p style={{ fontSize: "1.2rem", marginBottom: "30px", opacity: 0.9 }}>
-          Join CureSync today and simplify your healthcare journey.
-        </p>
-        <div
-          style={{
-            display: "flex",
-            gap: "15px",
-            justifyContent: "center",
-            flexWrap: "wrap",
-          }}
-        >
-          <button
-            style={{
-              padding: "15px 30px",
-              backgroundColor: "white",
-              color: "#27ae60",
-              border: "none",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontSize: "16px",
-              fontWeight: "bold",
-            }}
-          >
-            Join Now
-          </button>
-          <button
-            style={{
-              padding: "15px 30px",
-              backgroundColor: "transparent",
-              color: "white",
-              border: "2px solid white",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontSize: "16px",
-            }}
-          >
-            Login
-          </button>
-        </div>
-      </div>
+      <Blog />
+      <TestimonialSection />
+      <NewsletterSubscription />
     </div>
   );
 };
