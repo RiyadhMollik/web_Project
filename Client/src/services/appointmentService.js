@@ -32,6 +32,26 @@ class AppointmentService {
         return response.json();
     }
 
+    // Make public API request (no authentication required)
+    async makePublicRequest(endpoint, options = {}) {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers,
+            },
+            ...options,
+        };
+
+        const response = await fetch(`${this.baseURL}${endpoint}`, config);
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        }
+
+        return response.json();
+    }
+
     // Book a new appointment
     async bookAppointment(appointmentData) {
         return this.makeRequest('/appointments/book', {
@@ -86,12 +106,12 @@ class AppointmentService {
 
     // Get doctor schedules
     async getDoctorSchedules(doctorId) {
-        return this.makeRequest(`/appointments/doctor/${doctorId}/schedules`);
+        return this.makePublicRequest(`/schedules/doctor/${doctorId}`);
     }
 
     // Get all doctors (for appointment booking)
     async getAllDoctors() {
-        return this.makeRequest('/users/role/doctor');
+        return this.makePublicRequest('/users/public/doctors');
     }
 
     // Get doctor details

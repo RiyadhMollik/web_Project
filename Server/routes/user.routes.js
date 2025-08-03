@@ -14,4 +14,7 @@ router.post('/:id/reactivate', authenticateToken, requireAdmin, userController.r
 // Routes accessible by admin and doctor
 router.get('/role/:role', authenticateToken, requireDoctorOrAdmin, userController.getUsersByRole);
 
+// Public route to get doctors (for appointment booking)
+router.get('/public/doctors', userController.getPublicDoctors);
+
 module.exports = router; 

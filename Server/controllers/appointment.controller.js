@@ -386,8 +386,18 @@ const getAvailableSlots = async (req, res) => {
         schedules.forEach(schedule => {
             console.log('Processing schedule:', schedule.hospitalName, schedule.startTime, schedule.endTime);
             
-            const startTime = new Date(`2000-01-01 ${schedule.startTime}`);
-            const endTime = new Date(`2000-01-01 ${schedule.endTime}`);
+            // Convert TIME format (HH:MM:SS) to HH:MM for processing
+            const startTimeStr = schedule.startTime.slice(0, 5); // Take only HH:MM
+            const endTimeStr = schedule.endTime.slice(0, 5); // Take only HH:MM
+            
+            const startTime = new Date(`2000-01-01 ${startTimeStr}`);
+            const endTime = new Date(`2000-01-01 ${endTimeStr}`);
+
+            // Skip invalid schedules where end time is before or equal to start time
+            if (endTime <= startTime) {
+                console.log('Skipping invalid schedule:', schedule.id, 'end time <= start time');
+                return;
+            }
 
             // Generate 30-minute slots
             const slotDuration = 30; // minutes

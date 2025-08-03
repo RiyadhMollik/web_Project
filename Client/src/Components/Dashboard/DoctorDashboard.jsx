@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { userService } from "../../services/authService";
+import DoctorScheduleManager from "./DoctorScheduleManager";
 
 const DoctorDashboard = () => {
   const { user, updateProfile, logout } = useAuth();
@@ -19,6 +20,7 @@ const DoctorDashboard = () => {
   const [message, setMessage] = useState("");
   const [patients, setPatients] = useState([]);
   const [loadingPatients, setLoadingPatients] = useState(false);
+  const [activeSection, setActiveSection] = useState("profile"); // profile, patients, schedules
 
   useEffect(() => {
     fetchPatients();
@@ -76,10 +78,49 @@ const DoctorDashboard = () => {
           </div>
         </div>
 
+        {/* Navigation Tabs */}
+        <div className="bg-white shadow rounded-lg mb-6">
+          <div className="border-b border-gray-200">
+            <nav className="-mb-px flex space-x-8 px-6">
+              <button
+                onClick={() => setActiveSection("profile")}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeSection === "profile"
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
+              >
+                Profile
+              </button>
+              <button
+                onClick={() => setActiveSection("patients")}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeSection === "patients"
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
+              >
+                Patients
+              </button>
+              <button
+                onClick={() => setActiveSection("schedules")}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeSection === "schedules"
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
+              >
+                Schedules
+              </button>
+            </nav>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Profile Section */}
+          {/* Main Content Section */}
           <div className="lg:col-span-2">
-            <div className="bg-white shadow rounded-lg">
+            {activeSection === "profile" && (
+              <div className="bg-white shadow rounded-lg">
               <div className="px-6 py-4 border-b border-gray-200">
                 <div className="flex justify-between items-center">
                   <h2 className="text-xl font-semibold text-gray-900">
@@ -330,75 +371,82 @@ const DoctorDashboard = () => {
               </div>
             </div>
 
-            {/* Patients List */}
-            <div className="bg-white shadow rounded-lg mt-6">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-xl font-semibold text-gray-900">
-                  My Patients
-                </h2>
-              </div>
-              <div className="p-6">
-                {loadingPatients ? (
-                  <div className="flex justify-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                  </div>
-                ) : patients.length > 0 ? (
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
-                        <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Name
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Email
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Phone
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Blood Group
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Actions
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
-                        {patients.map((patient) => (
-                          <tr key={patient.id}>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                              {patient.name}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {patient.email}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {patient.phone || "N/A"}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {patient.bloodGroup || "N/A"}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                              <button className="text-blue-600 hover:text-blue-900 mr-3">
-                                View Details
-                              </button>
-                              <button className="text-green-600 hover:text-green-900">
-                                Schedule Appointment
-                              </button>
-                            </td>
+            )}
+
+            {activeSection === "patients" && (
+              <div className="bg-white shadow rounded-lg">
+                <div className="px-6 py-4 border-b border-gray-200">
+                  <h2 className="text-xl font-semibold text-gray-900">
+                    My Patients
+                  </h2>
+                </div>
+                <div className="p-6">
+                  {loadingPatients ? (
+                    <div className="flex justify-center py-8">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                    </div>
+                  ) : patients.length > 0 ? (
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                          <tr>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              Name
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              Email
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              Phone
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              Blood Group
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              Actions
+                            </th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <p className="text-gray-500 text-center py-8">
-                    No patients found.
-                  </p>
-                )}
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                          {patients.map((patient) => (
+                            <tr key={patient.id}>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                {patient.name}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {patient.email}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {patient.phone || "N/A"}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {patient.bloodGroup || "N/A"}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <button className="text-blue-600 hover:text-blue-900 mr-3">
+                                  View Details
+                                </button>
+                                <button className="text-green-600 hover:text-green-900">
+                                  Schedule Appointment
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <p className="text-gray-500 text-center py-8">
+                      No patients found.
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
+
+            {activeSection === "schedules" && (
+              <DoctorScheduleManager />
+            )}
           </div>
 
           {/* Quick Actions */}

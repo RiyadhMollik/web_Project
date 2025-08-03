@@ -155,6 +155,23 @@ const getUsersByRole = async (req, res) => {
   }
 };
 
+// Get public doctors list (for appointment booking)
+const getPublicDoctors = async (req, res) => {
+  try {
+    const doctors = await User.findAll({
+      where: { role: 'doctor', isActive: true },
+      attributes: ['id', 'name', 'specialization', 'experience', 'licenseNumber'],
+      order: [['name', 'ASC']]
+    });
+
+    res.json({ users: doctors });
+
+  } catch (error) {
+    console.error('Get public doctors error:', error);
+    res.status(500).json({ message: 'Error fetching doctors' });
+  }
+};
+
 // Get dashboard stats (admin only)
 const getDashboardStats = async (req, res) => {
   try {
@@ -200,5 +217,6 @@ module.exports = {
   deleteUser,
   reactivateUser,
   getUsersByRole,
+  getPublicDoctors,
   getDashboardStats
 }; 

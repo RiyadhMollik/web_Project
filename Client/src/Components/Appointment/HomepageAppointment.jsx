@@ -27,6 +27,7 @@ const HomepageAppointment = () => {
   const [doctorDetails, setDoctorDetails] = useState(null);
   const [showDoctorDetails, setShowDoctorDetails] = useState(false);
   const [reviews, setReviews] = useState([]);
+  const [doctorSchedules, setDoctorSchedules] = useState([]);
   const [newReview, setNewReview] = useState({ rating: 5, comment: "" });
 
   // Fetch doctors on component mount
@@ -79,6 +80,10 @@ const HomepageAppointment = () => {
       // Fetch real reviews from backend
       const reviewsResponse = await reviewService.getDoctorReviews(doctorId);
       setReviews(reviewsResponse.reviews || []);
+
+      // Also fetch doctor schedules
+      const schedulesResponse = await appointmentService.getDoctorSchedules(doctorId);
+      setDoctorSchedules(schedulesResponse.schedules || []);
     } catch (error) {
       console.error("Error fetching doctor details:", error);
       setError("Failed to load doctor details");
@@ -191,6 +196,10 @@ const HomepageAppointment = () => {
     const ampm = hour >= 12 ? "PM" : "AM";
     const displayHour = hour % 12 || 12;
     return `${displayHour}:${minutes} ${ampm}`;
+  };
+
+  const getDayDisplayName = (day) => {
+    return day.charAt(0).toUpperCase() + day.slice(1);
   };
 
   const getNextWeekDates = () => {
@@ -445,6 +454,40 @@ const HomepageAppointment = () => {
                         Book Appointment with this Doctor
                       </button>
                     </div>
+
+                    {/* Doctor Schedules */}
+                    {doctorSchedules.length > 0 && (
+                      <div className="mt-6">
+                        <h4 className="font-medium text-gray-800 mb-3">
+                          Available Schedules
+                        </h4>
+                        <div className="space-y-2">
+                          {doctorSchedules.map((schedule) => (
+                            <div
+                              key={schedule.id}
+                              className="border border-gray-200 rounded-lg p-3 bg-gray-50"
+                            >
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <h5 className="font-medium text-gray-900">
+                                    {getDayDisplayName(schedule.dayOfWeek)}
+                                  </h5>
+                                  <p className="text-sm text-gray-600">
+                                    {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
+                                  </p>
+                                  <p className="text-sm text-gray-600">
+                                    {schedule.hospitalName}
+                                  </p>
+                                  <p className="text-sm text-gray-600">
+                                    Fee: ${schedule.consultationFee}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Reviews Section */}

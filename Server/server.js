@@ -29,19 +29,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Import routes
-let authRoutes, userRoutes, appointmentRoutes, reviewRoutes;
+let authRoutes, userRoutes, appointmentRoutes, reviewRoutes, scheduleRoutes;
 
 try {
   authRoutes = require('./routes/auth.routes');
   userRoutes = require('./routes/user.routes');
   appointmentRoutes = require('./routes/appointment.routes');
   reviewRoutes = require('./routes/review.routes');
+  scheduleRoutes = require('./routes/schedule.routes');
 } catch (error) {
   console.error('Failed to load routes:', error.message);
   authRoutes = express.Router();
   userRoutes = express.Router();
   appointmentRoutes = express.Router();
   reviewRoutes = express.Router();
+  scheduleRoutes = express.Router();
 }
 
 // Use routes
@@ -49,6 +51,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/schedules', scheduleRoutes);
 
 // Basic route
 app.get('/', (req, res) => {

@@ -1,4 +1,4 @@
-const { Review, User } = require('../models');
+const { Review, User, sequelize } = require('../models');
 
 // Add a new review
 const addReview = async (req, res) => {

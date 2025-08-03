@@ -27,6 +27,7 @@ const DoctorAppSystem = () => {
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [doctorDetails, setDoctorDetails] = useState(null);
   const [showDoctorDetails, setShowDoctorDetails] = useState(false);
+  const [doctorSchedules, setDoctorSchedules] = useState([]);
 
   // Fetch doctors on component mount
   useEffect(() => {
@@ -74,6 +75,10 @@ const DoctorAppSystem = () => {
       const response = await appointmentService.getDoctorDetails(doctorId);
       setDoctorDetails(response.user);
       setShowDoctorDetails(true);
+      
+      // Also fetch doctor schedules
+      const schedulesResponse = await appointmentService.getDoctorSchedules(doctorId);
+      setDoctorSchedules(schedulesResponse.schedules || []);
     } catch (error) {
       console.error("Error fetching doctor details:", error);
       setError("Failed to load doctor details");
@@ -194,6 +199,10 @@ const DoctorAppSystem = () => {
     const ampm = hour >= 12 ? "PM" : "AM";
     const displayHour = hour % 12 || 12;
     return `${displayHour}:${minutes} ${ampm}`;
+  };
+
+  const getDayDisplayName = (day) => {
+    return day.charAt(0).toUpperCase() + day.slice(1);
   };
 
   const getNextWeekDates = () => {
@@ -375,6 +384,40 @@ const DoctorAppSystem = () => {
                   </p>
                 </div>
               </div>
+
+              {/* Doctor Schedules */}
+              {doctorSchedules.length > 0 && (
+                <div className="mt-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                    Available Schedules
+                  </h3>
+                  <div className="grid gap-3">
+                    {doctorSchedules.map((schedule) => (
+                      <div
+                        key={schedule.id}
+                        className="border border-gray-200 rounded-lg p-3 bg-gray-50"
+                      >
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h4 className="font-medium text-gray-900">
+                              {getDayDisplayName(schedule.dayOfWeek)}
+                            </h4>
+                            <p className="text-sm text-gray-600">
+                              {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              {schedule.hospitalName}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Fee: ${schedule.consultationFee}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="flex justify-end pt-4">
                 <button
