@@ -21,6 +21,7 @@ import AdminDashboard from "../Components/Dashboard/AdminDashboard";
 
 // Protected Route Component
 import ProtectedRoute from "../components/ProtectedRoute";
+import Blog from "../Blog/Blog";
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />,
+      },
+      {
+        path: "/blog",
+        element: <Blog />,
       },
       {
         path: "/footer",
