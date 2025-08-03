@@ -12,6 +12,9 @@ import PatientProfile from "../Components/Profile/PatientProfile";
 import DoctorAppSystem from "../Components/Appointment/DoctorAppSystem";
 import DoctorDetails from "../Components/Appointment/DoctorDetails";
 import AppointmentList from "../Components/Appointment/AppointmentList";
+import InvoiceList from "../Components/Invoice/InvoiceList";
+import DoctorApprovalForm from "../Components/DoctorApproval/DoctorApprovalForm";
+import DoctorApprovalManager from "../Components/Admin/DoctorApprovalManager";
 import About from "../Home/About";
 
 // Dashboard Components
@@ -76,6 +79,22 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "/invoices",
+        element: (
+          <ProtectedRoute requiredRoles={["patient", "doctor"]}>
+            <InvoiceList />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/doctor-approval",
+        element: (
+          <ProtectedRoute requiredRoles={["patient"]}>
+            <DoctorApprovalForm />
+          </ProtectedRoute>
+        ),
+      },
       // Dashboard Routes
       {
         path: "/patient/dashboard",
@@ -98,6 +117,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute requiredRoles={["admin"]}>
             <AdminDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin/doctor-approvals",
+        element: (
+          <ProtectedRoute requiredRoles={["admin"]}>
+            <DoctorApprovalManager />
           </ProtectedRoute>
         ),
       },

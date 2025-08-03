@@ -115,9 +115,13 @@ const Signup = () => {
             className="w-full px-4 py-2 border text-black rounded-md focus:outline-none focus:ring focus:ring-blue-300"
           >
             <option value="patient">Patient</option>
-            <option value="doctor">Doctor</option>
             <option value="admin">Admin</option>
           </select>
+          
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-700">
+            <p className="font-medium mb-1">Want to become a doctor?</p>
+            <p>Register as a patient first, then submit an approval request after logging in.</p>
+          </div>
 
           {/* Common Fields */}
           <input
@@ -156,32 +160,7 @@ const Signup = () => {
             <option value="other">Other</option>
           </select>
 
-          {/* Doctor-specific fields */}
-          {formData.role === "doctor" && (
-            <>
-              <input
-                type="text"
-                name="specialization"
-                placeholder="Specialization"
-                className="w-full px-4 py-2 border text-black rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                onChange={handleChange}
-              />
-              <input
-                type="text"
-                name="licenseNumber"
-                placeholder="License Number"
-                className="w-full px-4 py-2 border text-black rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                onChange={handleChange}
-              />
-              <input
-                type="number"
-                name="experience"
-                placeholder="Years of Experience"
-                className="w-full px-4 py-2 border text-black rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                onChange={handleChange}
-              />
-            </>
-          )}
+
 
           {/* Patient-specific fields */}
           {formData.role === "patient" && (

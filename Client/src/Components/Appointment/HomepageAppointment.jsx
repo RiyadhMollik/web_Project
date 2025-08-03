@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useToast } from "../../context/ToastContext";
 import { appointmentService } from "../../services/appointmentService";
 import { reviewService } from "../../services/reviewService";
+import { invoiceService } from "../../services/invoiceService";
 
 const HomepageAppointment = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
+  const { showSuccess, showError } = useToast();
 
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -174,17 +177,29 @@ const HomepageAppointment = () => {
         appointmentData
       );
 
-      alert(
-        `Appointment booked successfully with ${selectedDoctor.name} on ${
-          appointmentData.appointmentDate
-        } at ${formatTime(appointmentData.appointmentTime)}`
-      );
+      // Generate invoice after successful appointment booking
+      try {
+        const invoiceResponse = await invoiceService.generateInvoice(response.appointment.id);
+        showSuccess(
+          `Appointment booked successfully with ${selectedDoctor.name} on ${
+            appointmentData.appointmentDate
+          } at ${formatTime(appointmentData.appointmentTime)}. Invoice #${invoiceResponse.invoice.invoiceNumber} has been generated.`
+        );
+      } catch (invoiceError) {
+        console.error('Error generating invoice:', invoiceError);
+        showSuccess(
+          `Appointment booked successfully with ${selectedDoctor.name} on ${
+            appointmentData.appointmentDate
+          } at ${formatTime(appointmentData.appointmentTime)}`
+        );
+        showWarning('Invoice generation failed. Please contact support.');
+      }
 
       handleCloseModal();
       navigate("/patient/dashboard");
     } catch (error) {
       console.error("Error booking appointment:", error);
-      setError(error.message || "Failed to book appointment");
+      showError(error.message || "Failed to book appointment");
     } finally {
       setLoading(false);
     }
@@ -230,10 +245,10 @@ const HomepageAppointment = () => {
         setReviews(reviewsResponse.reviews || []);
 
         setNewReview({ rating: 5, comment: "" });
-        alert("Review submitted successfully!");
+        showSuccess("Review submitted successfully!");
       } catch (error) {
         console.error("Error submitting review:", error);
-        alert(error.message || "Failed to submit review");
+        showError(error.message || "Failed to submit review");
       }
     }
   };
@@ -249,10 +264,10 @@ const HomepageAppointment = () => {
         );
         setReviews(reviewsResponse.reviews || []);
 
-        alert("Review deleted successfully!");
+        showSuccess("Review deleted successfully!");
       } catch (error) {
         console.error("Error deleting review:", error);
-        alert(error.message || "Failed to delete review");
+        showError(error.message || "Failed to delete review");
       }
     }
   };

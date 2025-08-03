@@ -37,9 +37,9 @@ const register = async (req, res) => {
     }
 
     // Validate role
-    const validRoles = ['patient', 'doctor', 'admin'];
+    const validRoles = ['patient', 'admin'];
     if (!validRoles.includes(role)) {
-      return res.status(400).json({ message: 'Invalid role' });
+      return res.status(400).json({ message: 'Invalid role. Doctors must register as patients first and then submit approval request.' });
     }
 
     // Create user data object
@@ -55,11 +55,7 @@ const register = async (req, res) => {
     };
 
     // Add role-specific fields
-    if (role === 'doctor') {
-      userData.specialization = specialization;
-      userData.licenseNumber = licenseNumber;
-      userData.experience = experience;
-    } else if (role === 'patient') {
+    if (role === 'patient') {
       userData.bloodGroup = bloodGroup;
       userData.emergencyContact = emergencyContact;
     }
@@ -73,8 +69,13 @@ const register = async (req, res) => {
     // Return user data (without password) and token
     const userResponse = user.getPublicProfile();
 
+    let message = 'User registered successfully';
+    if (role === 'patient') {
+      message = 'Patient registered successfully. If you want to become a doctor, please submit an approval request after logging in.';
+    }
+
     res.status(201).json({
-      message: 'User registered successfully',
+      message,
       user: userResponse,
       token
     });

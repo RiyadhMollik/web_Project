@@ -101,7 +101,7 @@ class AppointmentService {
             date: date,
         });
 
-        return this.makeRequest(`/appointments/available-slots?${params}`);
+        return this.makeRequest(`/appointments/available-slots/available-slots?${params}`);
     }
 
     // Get doctor schedules
