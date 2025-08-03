@@ -13,6 +13,7 @@ import DoctorAppSystem from "../Components/Appointment/DoctorAppSystem";
 import DoctorDetails from "../Components/Appointment/DoctorDetails";
 import AppointmentList from "../Components/Appointment/AppointmentList";
 import About from "../Home/About";
+import Features from "../Features/Features";
 
 // Dashboard Components
 import PatientDashboard from "../Components/Dashboard/PatientDashboard";
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />,
+      },
+      {
+        path: "/features",
+        element: <Features />,
       },
       {
         path: "/blog",
