@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const path = require('path');
 // Load environment variables
 try {
   require('dotenv').config();
@@ -28,8 +29,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Serve static files (medical reports)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Import routes
-let authRoutes, userRoutes, appointmentRoutes, reviewRoutes, scheduleRoutes;
+let authRoutes, userRoutes, appointmentRoutes, reviewRoutes, scheduleRoutes, invoiceRoutes, doctorApprovalRoutes, medicalReportRoutes;
 
 try {
   authRoutes = require('./routes/auth.routes');
@@ -37,6 +41,9 @@ try {
   appointmentRoutes = require('./routes/appointment.routes');
   reviewRoutes = require('./routes/review.routes');
   scheduleRoutes = require('./routes/schedule.routes');
+  invoiceRoutes = require('./routes/invoice.routes');
+  doctorApprovalRoutes = require('./routes/doctorApproval.routes');
+  medicalReportRoutes = require('./routes/medicalReport.routes');
 } catch (error) {
   console.error('Failed to load routes:', error.message);
   authRoutes = express.Router();
@@ -44,6 +51,8 @@ try {
   appointmentRoutes = express.Router();
   reviewRoutes = express.Router();
   scheduleRoutes = express.Router();
+  invoiceRoutes = express.Router();
+  doctorApprovalRoutes = express.Router();
 }
 
 // Use routes
@@ -52,6 +61,9 @@ app.use('/api/users', userRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/schedules', scheduleRoutes);
+app.use('/api/invoices', invoiceRoutes);
+app.use('/api/doctor-approvals', doctorApprovalRoutes);
+app.use('/api/medical-reports', medicalReportRoutes);
 
 // Basic route
 app.get('/', (req, res) => {

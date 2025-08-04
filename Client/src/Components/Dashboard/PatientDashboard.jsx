@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { authService } from "../../services/authService";
 import { appointmentService } from "../../services/appointmentService";
 
 const PatientDashboard = () => {
+  const navigate = useNavigate();
   const { user, updateProfile, logout } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
@@ -451,6 +453,47 @@ const PatientDashboard = () => {
                     )}
                   </div>
                 )}
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="bg-white shadow rounded-lg mt-6">
+              <div className="px-6 py-4 border-b border-gray-200">
+                <h2 className="text-xl font-semibold text-primary">
+                  Quick Actions
+                </h2>
+              </div>
+              <div className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <button
+                    onClick={() => navigate("/doctor-appointment")}
+                    className="flex items-center justify-center p-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200"
+                  >
+                    <span className="text-lg">📅</span>
+                    <span className="ml-2 font-medium">Book Appointment</span>
+                  </button>
+                  <button
+                    onClick={() => navigate("/invoices")}
+                    className="flex items-center justify-center p-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200"
+                  >
+                    <span className="text-lg">📄</span>
+                    <span className="ml-2 font-medium">View Invoices</span>
+                  </button>
+                                     <button
+                     onClick={() => navigate("/doctor-approval")}
+                     className="flex items-center justify-center p-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition duration-200"
+                   >
+                     <span className="text-lg">👨‍⚕️</span>
+                     <span className="ml-2 font-medium">Become a Doctor</span>
+                   </button>
+                   <button
+                     onClick={() => navigate("/patient-profile")}
+                     className="flex items-center justify-center p-4 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition duration-200"
+                   >
+                     <span className="text-lg">📋</span>
+                     <span className="ml-2 font-medium">Manage Medical Reports</span>
+                   </button>
+                </div>
               </div>
             </div>
 

@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useToast } from "../../context/ToastContext";
 import { appointmentService } from "../../services/appointmentService";
+import { reviewService } from "../../services/reviewService";
+import { invoiceService } from "../../services/invoiceService";
 
 const DoctorAppSystem = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
+  const { showSuccess, showError } = useToast();
   const searchQuery = location.state?.search?.toLowerCase() || "";
 
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -177,17 +181,29 @@ const DoctorAppSystem = () => {
         appointmentData
       );
 
-      alert(
-        `Appointment booked successfully with ${selectedDoctor.name} on ${
-          appointmentData.appointmentDate
-        } at ${formatTime(appointmentData.appointmentTime)}`
-      );
+      // Generate invoice after successful appointment booking
+      try {
+        const invoiceResponse = await invoiceService.generateInvoice(response.appointment.id);
+        showSuccess(
+          `Appointment booked successfully with ${selectedDoctor.name} on ${
+            appointmentData.appointmentDate
+          } at ${formatTime(appointmentData.appointmentTime)}. Invoice #${invoiceResponse.invoice.invoiceNumber} has been generated.`
+        );
+      } catch (invoiceError) {
+        console.error('Error generating invoice:', invoiceError);
+        showSuccess(
+          `Appointment booked successfully with ${selectedDoctor.name} on ${
+            appointmentData.appointmentDate
+          } at ${formatTime(appointmentData.appointmentTime)}`
+        );
+        showWarning('Invoice generation failed. Please contact support.');
+      }
 
       handleCloseModal();
       navigate("/patient/dashboard");
     } catch (error) {
       console.error("Error booking appointment:", error);
-      setError(error.message || "Failed to book appointment");
+      showError(error.message || "Failed to book appointment");
     } finally {
       setLoading(false);
     }

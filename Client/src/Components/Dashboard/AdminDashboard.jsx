@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { userService } from '../../services/authService';
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [users, setUsers] = useState([]);
   const [stats, setStats] = useState({});
@@ -166,6 +168,38 @@ const AdminDashboard = () => {
                   {loadingStats ? '...' : stats.recentRegistrations || 0}
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="bg-white shadow rounded-lg mb-6">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h2 className="text-xl font-semibold text-gray-900">Quick Actions</h2>
+          </div>
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <button
+                onClick={() => navigate("/admin/doctor-approvals")}
+                className="flex items-center justify-center p-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200"
+              >
+                <span className="text-lg">👨‍⚕️</span>
+                <span className="ml-2 font-medium">Manage Doctor Approvals</span>
+              </button>
+              <button
+                onClick={() => navigate("/admin/users")}
+                className="flex items-center justify-center p-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200"
+              >
+                <span className="text-lg">👥</span>
+                <span className="ml-2 font-medium">User Management</span>
+              </button>
+              <button
+                onClick={() => navigate("/admin/analytics")}
+                className="flex items-center justify-center p-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition duration-200"
+              >
+                <span className="text-lg">📊</span>
+                <span className="ml-2 font-medium">Analytics</span>
+              </button>
             </div>
           </div>
         </div>

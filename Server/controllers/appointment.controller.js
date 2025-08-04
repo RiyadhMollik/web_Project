@@ -53,7 +53,7 @@ const bookAppointment = async (req, res) => {
         }
 
         // Check if the appointment time falls within the schedule
-        const appointmentDay = appointmentDateTime.toLocaleDateString('en-US', { weekday: 'lowercase' });
+        const appointmentDay = appointmentDateTime.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
         if (appointmentDay !== schedule.dayOfWeek) {
             return res.status(400).json({
                 message: `Appointment must be on ${schedule.dayOfWeek}`
@@ -341,7 +341,8 @@ const cancelAppointment = async (req, res) => {
 const getAvailableSlots = async (req, res) => {
     try {
         const { doctorId, date } = req.query;
-
+        console.log('doctorId', doctorId);
+        console.log('date', date);
         if (!doctorId || !date) {
             return res.status(400).json({ message: 'doctorId and date are required' });
         }
@@ -385,11 +386,11 @@ const getAvailableSlots = async (req, res) => {
 
         schedules.forEach(schedule => {
             console.log('Processing schedule:', schedule.hospitalName, schedule.startTime, schedule.endTime);
-            
+
             // Convert TIME format (HH:MM:SS) to HH:MM for processing
             const startTimeStr = schedule.startTime.slice(0, 5); // Take only HH:MM
             const endTimeStr = schedule.endTime.slice(0, 5); // Take only HH:MM
-            
+
             const startTime = new Date(`2000-01-01 ${startTimeStr}`);
             const endTime = new Date(`2000-01-01 ${endTimeStr}`);
 
