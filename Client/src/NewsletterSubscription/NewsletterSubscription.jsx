@@ -34,7 +34,7 @@ export default function NewsletterSubscription() {
             className="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700"
           >
             Subscribe
-     
+          </button>
         </form>
       )}
     </section>
