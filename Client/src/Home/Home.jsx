@@ -106,7 +106,7 @@ const Home = () => {
             style={{ flex: 1 }}
           >
             <img
-              src="https://i.ibb.co/020000/hero-image.png"
+              src="https://i.ibb.co/TBZ1LH0p/image-removebg-preview-12.png"
               alt="Doctor and patient appointment illustration"
               style={{ maxWidth: "100%", height: "auto", borderRadius: "12px" }}
             />
