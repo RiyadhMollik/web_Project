@@ -154,7 +154,7 @@ export default function Blog() {
         </motion.div>
 
         {/* Blog Posts Grid */}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mb-12">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 mb-12">
           {displayedPosts.map((post, i) => (
             <motion.div
               key={post.id}
@@ -259,7 +259,7 @@ export default function Blog() {
               placeholder="Enter your email address"
               className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
-            <button className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+            <button className="bg-white  px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
               Subscribe
             </button>
           </div>

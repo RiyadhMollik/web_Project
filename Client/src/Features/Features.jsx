@@ -170,7 +170,7 @@ const Features = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 ">
       {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: -50 }}

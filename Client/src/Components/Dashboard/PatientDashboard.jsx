@@ -513,7 +513,7 @@ const PatientDashboard = () => {
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-green-600 rounded-full"></div>
                     <p className="text-sm text-secondary">
-                      Appointment scheduled
+                      Appointment Timeline
                     </p>
                   </div>
                   <div className="flex items-center space-x-3">

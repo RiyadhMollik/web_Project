@@ -41,9 +41,9 @@ input:focus, textarea:focus, select:focus {
 }
 
 /* Button text visibility */
-button {
+/* button {
   color: var(--white-text) !important;
-}
+} */
 
 button:disabled {
   color: #9ca3af !important;
